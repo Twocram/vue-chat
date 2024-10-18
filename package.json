@@ -26,6 +26,10 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-vue": "^9.29.0",
     "prettier": "^3.3.3",
+    "prisma": "^5.21.1",
     "vue-eslint-parser": "^9.4.3"
+  },
+  "dependencies": {
+    "@prisma/client": "5.21.1"
   }
 }
