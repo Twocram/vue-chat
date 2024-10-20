@@ -14,12 +14,36 @@ datasource db {
 }
 
 model User {
-  id        Int      @id @default(autoincrement())
+  id        Int       @id @default(autoincrement())
   username  String
   password  Bytes
-  token     String?  @unique
-  createdAt DateTime @default(now()) @map("created_at")
+  token     String?   @unique
+  createdAt DateTime  @default(now()) @map("created_at")
+  Message   Message[]
+  chats     Chat[]
 
   @@unique([username])
   @@map("users")
+}
+
+model Chat {
+  id           String    @id @default(cuid())
+  name         String
+  participants User[]
+  createdAt    DateTime  @default(now()) @map("created_at")
+  Message      Message[]
+
+  @@map("chats")
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  text      String
+  chatId    String
+  createdAt DateTime @default(now()) @map("created_at")
+  userId    Int
+  User      User     @relation(fields: [userId], references: [id])
+  Chat      Chat?    @relation(fields: [chatId], references: [id])
+
+  @@map("messages")
 }
