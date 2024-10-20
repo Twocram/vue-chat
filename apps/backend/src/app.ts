@@ -1,18 +1,17 @@
 import fastify from 'fastify';
 import type { FastifyInstance } from 'fastify';
 import testRoutes from './routes/test';
+import prismaPlugin from './plugins/prismaPlugin';
+import authRoutes from './routes/auth';
 
 const server: FastifyInstance = fastify({
   logger: true,
 });
 
-server.get('/api', async () => {
-  return {
-    message: 'Hello World!',
-  };
-});
+server.register(prismaPlugin);
 
 server.register(testRoutes, { prefix: '/api/v1/test' });
+server.register(authRoutes, { prefix: '/api/v1/auth' });
 
 async function runServer() {
   try {
