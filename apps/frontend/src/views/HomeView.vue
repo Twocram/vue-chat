@@ -6,7 +6,7 @@
           class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400" />
       </div>
 
-      <VChatList :chats="filteredChats" :selectedChat="selectedChat" @selectChat="selectChat($event)" />
+      <VChatList :chats="chats" :selectedChat="selectedChat" @selectChat="selectChat($event)" />
 
       <div class="mt-4">
         <button @click="openCreateChat"
@@ -28,7 +28,7 @@
     <VChat :currentUser="currentUser" :selectedChat="selectedChat" :selectedChatMessages="selectedChatMessages"
       @sendMessage="sendMessage($event)" />
 
-    <VCreateChat v-if="showCreateChatModal" @createChat="createChat($event)" @close="closeCreateChat" />
+    <VCreateChat v-if="showCreateChatModal" @createChat="createChatHandler($event)" @close="closeCreateChat" />
 
     <VJoinChat v-if="showJoinChatModal" @joinChat="joinChat($event)" @close="closeJoinChat" />
   </div>
@@ -39,7 +39,17 @@ import VCreateChat from '@/components/dialogs/VCreateChat.vue';
 import VJoinChat from '@/components/dialogs/VJoinChat.vue';
 import VChat from '@/components/VChat.vue';
 import VChatList from '@/components/VChatList.vue';
-import { ref, computed } from 'vue';
+import { createChat, getUserChats } from '@/services/chatService';
+import { debounce } from '@/utils/debounce';
+import { ref, computed, onMounted, watch } from 'vue';
+
+onMounted(() => {
+  fetchUserChats()
+})
+
+async function fetchUserChats() {
+  await getUserChats(searchQuery.value)
+}
 
 const currentUser = 'me';
 
@@ -70,26 +80,15 @@ const chats = ref([
 
 const searchQuery = ref('');
 const selectedChat = ref<typeof chats.value[0] | null>(null);
-const newMessage = ref('');
 
-// Фильтрация чатов по поисковому запросу
-const filteredChats = computed(() => {
-  return chats.value.filter((chat) =>
-    chat.name.toLowerCase().includes(searchQuery.value.toLowerCase())
-  );
-});
-
-// Сообщения выбранного чата
 const selectedChatMessages = computed(() => {
   return selectedChat.value ? selectedChat.value.messages : [];
 });
 
-// Функция для выбора чата
 const selectChat = (chat: typeof selectedChat.value) => {
   selectedChat.value = chat;
 };
 
-// Отправка сообщения
 const sendMessage = (newMessage: string) => {
   if (!newMessage.trim()) return;
 
@@ -102,12 +101,10 @@ const sendMessage = (newMessage: string) => {
   }
 };
 
-// Выход из профиля
 const logout = () => {
   console.log('Logout');
 };
 
-// Модальное окно для создания чата
 const showCreateChatModal = ref(false);
 const openCreateChat = () => {
   showCreateChatModal.value = true;
@@ -116,15 +113,11 @@ const closeCreateChat = () => {
   showCreateChatModal.value = false;
 };
 
-const createChat = (chatName: string) => {
+const createChatHandler = async (chatName: string) => {
   if (!chatName.trim()) return;
-  chats.value.push({
-    id: chats.value.length + 1,
-    name: chatName,
-    lastMessage: '',
-    participants: [currentUser],
-    messages: [],
-  });
+
+  await createChat(chatName);
+
   closeCreateChat();
 };
 
@@ -139,6 +132,12 @@ const joinChat = (chatId: string) => {
   console.log('Присоединение к чату с ID:', chatId);
   closeJoinChat();
 };
+
+const debounceFetchChats = debounce(fetchUserChats, 300)
+
+watch(searchQuery, () => {
+  debounceFetchChats()
+});
 </script>
 
 <style scoped></style>

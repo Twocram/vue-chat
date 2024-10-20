@@ -25,6 +25,8 @@ export const useAuth: preHandlerHookHandler = async function (request, reply) {
         message: 'Wrong token',
       });
     }
+
+    request.user = user;
   } catch (err) {
     console.log(err);
     return reply.code(500).send({
