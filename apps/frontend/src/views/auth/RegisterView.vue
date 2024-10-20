@@ -45,8 +45,6 @@ const router = useRouter();
 async function handleRegister() {
     const { data, error } = await register(username.value, password.value)
 
-    console.log("DATA", data)
-
     if (error) {
         throw error;
     }
