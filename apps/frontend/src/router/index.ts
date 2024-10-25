@@ -18,6 +18,11 @@ const router = createRouter({
       name: 'register',
       component: () => import('../views/auth/RegisterView.vue'),
     },
+    {
+      path: '/chat/:chatId',
+      name: 'chat',
+      component: () => import('../views/ChatView.vue'),
+    },
   ],
 });
 

@@ -31,9 +31,11 @@ export default async function chatRoutes(fastify: FastifyInstance) {
       });
 
       const _userChats = userChats.map((chat) => {
-        return pick(chat, 'name', 'messages');
+        return {
+          ...pick(chat, 'id', 'name'),
+          lastMessage: chat.messages[chat.messages.length - 1] || null,
+        };
       });
-
       return reply.send({
         data: _userChats,
       });

@@ -9,7 +9,7 @@
             </p>
         </div>
 
-        <VMessageList :messages="selectedChatMessages" :currentUser="currentUser" />
+        <VMessageList :currentUser="currentUser" />
 
         <div v-if="selectedChat" class="flex items-center">
             <input v-model="newMessage" type="text" placeholder="Введите сообщение..."
@@ -29,7 +29,6 @@ import VMessageList from './VMessageList.vue';
 type Props = {
     currentUser: any,
     selectedChat: any,
-    selectedChatMessages: any,
 }
 
 defineProps<Props>()
