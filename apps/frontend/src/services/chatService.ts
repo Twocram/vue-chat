@@ -1,4 +1,4 @@
-import type { Chat } from '../types/chat';
+import type { Chat } from '@/types/chat';
 
 export async function getUserChats(
   queryValue: string
@@ -36,10 +36,26 @@ export async function createChat(name: string): Promise<any> {
       }),
     });
 
-    const data = await response.json();
-
-    return data;
+    return await response.json();
   } catch (err: unknown) {
     return err;
+  }
+}
+
+export async function getCurrentChat(id: string) {
+  try {
+    const response = await fetch(`/api/v1/chat/${id}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const { data } = await response.json();
+
+    return { data, error: null };
+  } catch (error: unknown) {
+    return { data: null, error };
   }
 }

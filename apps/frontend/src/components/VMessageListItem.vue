@@ -1,23 +1,35 @@
 <template>
-    <div class="mb-2">
-        <p :class="{ 'text-right': messageFrom === currentUser }">
-            <span
-                :class="{ 'bg-indigo-500 text-white': messageFrom === currentUser, 'bg-gray-200': messageFrom !== currentUser }"
-                class="inline-block px-3 py-2 rounded-lg">
-                {{ text }}
-            </span>
-        </p>
-    </div>
+  <div class="mb-2">
+    <p :class="{ 'text-right': messageFrom === currentUser.id }">
+      <span
+        :class="{
+          'bg-indigo-500 text-white': messageFrom === currentUser.id,
+          'bg-gray-200': messageFrom !== currentUser.id,
+        }"
+        class="inline-block px-3 py-2 rounded-lg"
+      >
+        {{ text }}
+      </span>
+    </p>
+  </div>
 </template>
 
 <script setup lang="ts">
-type Props = {
-    messageFrom: string,
-    text: string,
-    currentUser: string,
-}
+import { useAccountStore } from '@/stores/account';
+import { computed } from 'vue';
 
-defineProps<Props>()
+type Props = {
+  messageFrom: string;
+  text: string;
+};
+
+defineProps<Props>();
+
+const accountStore = useAccountStore();
+
+const currentUser = computed(() => {
+  return accountStore.info;
+});
 </script>
 
 <style scoped></style>

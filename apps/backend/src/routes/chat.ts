@@ -27,12 +27,16 @@ export default async function chatRoutes(fastify: FastifyInstance) {
 
         include: {
           messages: true,
+          participants: true,
         },
       });
 
       const _userChats = userChats.map((chat) => {
         return {
           ...pick(chat, 'id', 'name'),
+          participants: chat.participants.map((user) =>
+            pick(user, 'id', 'username')
+          ),
           lastMessage: chat.messages[chat.messages.length - 1] || null,
         };
       });
@@ -58,6 +62,39 @@ export default async function chatRoutes(fastify: FastifyInstance) {
 
     return reply.send({
       data: chat,
+    });
+  });
+
+  fastify.get('/:id', async (request: FastifyRequest, reply: FastifyReply) => {
+    const { id } = request.params as { id: string };
+
+    const chat = await fastify.prisma.chat.findUnique({
+      where: {
+        id,
+      },
+
+      include: {
+        participants: true,
+      },
+    });
+
+    if (!chat) {
+      return reply.code(401).send({
+        message: 'Chat not found',
+      });
+    }
+
+    const chatParticipants = chat.participants.map((p) =>
+      pick(p, 'id', 'username')
+    );
+
+    const _chat = {
+      ...chat,
+      participants: chatParticipants,
+    };
+
+    return reply.send({
+      data: _chat,
     });
   });
 }
