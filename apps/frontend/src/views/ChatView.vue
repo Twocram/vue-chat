@@ -4,6 +4,7 @@
       v-if="currentChat && connectionIsReady"
       :current-chat="currentChat"
       :messages
+      @send-message="sendMessage($event)"
     />
   </VChatLayout>
 </template>
@@ -37,7 +38,8 @@ onMounted(async () => {
   currentChat.value = data;
 
   connection.value = new WebSocket(
-    `ws://localhost:3000/api/v1/messages/${chatId.value}`
+    `ws://localhost:3000/api/v1/messages/${chatId.value}`,
+    ['accessToken', localStorage.getItem('token') as string]
   );
 
   connectionIsReady.value = true;
@@ -46,6 +48,16 @@ onMounted(async () => {
     messages.value = JSON.parse(event.data).messages;
   };
 });
+
+function sendMessage(message: string) {
+  if (connection.value) {
+    connection.value.send(
+      JSON.stringify({
+        message,
+      })
+    );
+  }
+}
 </script>
 
 <style scoped></style>

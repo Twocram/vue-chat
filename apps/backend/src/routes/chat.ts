@@ -97,4 +97,29 @@ export default async function chatRoutes(fastify: FastifyInstance) {
       data: _chat,
     });
   });
+
+  fastify.post(
+    '/connect',
+    async function (request: FastifyRequest, reply: FastifyReply) {
+      const { id } = request.body as { id: string };
+
+      await fastify.prisma.chat.update({
+        where: {
+          id,
+        },
+
+        data: {
+          participants: {
+            connect: {
+              id: request.user.id,
+            },
+          },
+        },
+      });
+
+      return reply.send({
+        data: 'Connected',
+      });
+    }
+  );
 }

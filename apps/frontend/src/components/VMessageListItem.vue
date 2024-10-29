@@ -19,7 +19,7 @@ import { useAccountStore } from '@/stores/account';
 import { computed } from 'vue';
 
 type Props = {
-  messageFrom: string;
+  messageFrom: number;
   text: string;
 };
 

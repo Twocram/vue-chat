@@ -10,9 +10,9 @@ const accountInfo = computed(() => {
   return accountStore.info;
 });
 
-onMounted(() => {
+onMounted(async () => {
   if (!accountInfo.value && localStorage.getItem('token')) {
-    const { data, error } = getAccountInfo();
+    const { data, error } = await getAccountInfo();
     if (error) {
       throw error;
     }

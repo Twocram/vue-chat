@@ -55,7 +55,7 @@
 import VCreateChat from '@/components/dialogs/VCreateChat.vue';
 import VJoinChat from '@/components/dialogs/VJoinChat.vue';
 import VChatList from '@/components/VChatList.vue';
-import { createChat, getUserChats } from '@/services/chatService';
+import { createChat, getUserChats, joinToChat } from '@/services/chatService';
 import type { Chat } from '@/types/chat';
 import { debounce } from '@/utils/debounce';
 import { onMounted, ref, watch } from 'vue';
@@ -113,8 +113,11 @@ const openJoinChat = () => {
 const closeJoinChat = () => {
   showJoinChatModal.value = false;
 };
-const joinChat = (chatId: string) => {
-  console.log('Присоединение к чату с ID:', chatId);
+const joinChat = async (chatId: string) => {
+  const { error } = await joinToChat(chatId);
+  if (!error) {
+    await fetchUserChats();
+  }
   closeJoinChat();
 };
 

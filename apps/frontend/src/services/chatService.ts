@@ -59,3 +59,22 @@ export async function getCurrentChat(id: string) {
     return { data: null, error };
   }
 }
+
+export async function joinToChat(id: string) {
+  try {
+    const response = await fetch(`/api/v1/chat/connect`, {
+      method: 'POST',
+      body: JSON.stringify({ id }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    const { data } = await response.json();
+
+    return { data, error: null };
+  } catch (err: unknown) {
+    return { data: null, error: err };
+  }
+}

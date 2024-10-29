@@ -3,7 +3,7 @@
     <VMessageListItem
       v-for="(message, index) in messages"
       :key="index"
-      :messageFrom="message.from"
+      :messageFrom="message.userId"
       :text="message.text"
     />
   </div>
