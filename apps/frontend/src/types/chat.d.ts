@@ -6,8 +6,14 @@ export type Message = {
   userId: string;
 };
 
-export type Chat = {
+export type ChatListItem = {
   id: string;
   lastMessage: Message;
   name: string;
+};
+
+export type Chat = {
+  id: string;
+  name: string;
+  createdAt: Date;
 };

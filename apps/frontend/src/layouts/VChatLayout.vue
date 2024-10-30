@@ -56,7 +56,7 @@ import VCreateChat from '@/components/dialogs/VCreateChat.vue';
 import VJoinChat from '@/components/dialogs/VJoinChat.vue';
 import VChatList from '@/components/VChatList.vue';
 import { createChat, getUserChats, joinToChat } from '@/services/chatService';
-import type { Chat } from '@/types/chat';
+import type { ChatListItem } from '@/types/chat';
 import { debounce } from '@/utils/debounce';
 import { onMounted, ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
@@ -75,13 +75,13 @@ async function fetchUserChats() {
   chats.value = data;
 }
 
-const chats = ref<Chat[]>([]);
+const chats = ref<ChatListItem[]>([]);
 
 const searchQuery = ref<string>('');
 
 const router = useRouter();
 
-const selectChat = async (chat: Chat) => {
+const selectChat = async (chat: ChatListItem) => {
   await router.push({ name: 'chat', params: { chatId: chat.id } });
 };
 

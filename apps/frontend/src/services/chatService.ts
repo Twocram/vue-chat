@@ -1,8 +1,13 @@
-import type { Chat } from '@/types/chat';
+import type {
+  CreateChatResponse,
+  CurrentChatResponse,
+  JoinToChatResponse,
+  UserChatsResponse,
+} from '@/types/response';
 
 export async function getUserChats(
   queryValue: string
-): Promise<{ data: Chat[]; error: unknown }> {
+): Promise<UserChatsResponse> {
   try {
     const response = await fetch(
       `/api/v1/chat/my-chats${queryValue ? `?searchName=${queryValue}` : ''}`,
@@ -23,7 +28,7 @@ export async function getUserChats(
   }
 }
 
-export async function createChat(name: string): Promise<any> {
+export async function createChat(name: string): Promise<CreateChatResponse> {
   try {
     const response = await fetch('/api/v1/chat', {
       method: 'POST',
@@ -36,13 +41,15 @@ export async function createChat(name: string): Promise<any> {
       }),
     });
 
-    return await response.json();
+    const { data } = await response.json();
+
+    return { data, error: null };
   } catch (err: unknown) {
-    return err;
+    return { data: null, error: err };
   }
 }
 
-export async function getCurrentChat(id: string) {
+export async function getCurrentChat(id: string): Promise<CurrentChatResponse> {
   try {
     const response = await fetch(`/api/v1/chat/${id}`, {
       method: 'GET',
@@ -60,7 +67,7 @@ export async function getCurrentChat(id: string) {
   }
 }
 
-export async function joinToChat(id: string) {
+export async function joinToChat(id: string): Promise<JoinToChatResponse> {
   try {
     const response = await fetch(`/api/v1/chat/connect`, {
       method: 'POST',

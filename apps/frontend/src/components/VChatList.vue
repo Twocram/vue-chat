@@ -10,12 +10,12 @@
 </template>
 
 <script setup lang="ts">
-import type { Chat } from '@/types/chat';
+import type { ChatListItem } from '@/types/chat';
 import VChatListItem from './VChatListItem.vue';
 
 const emits = defineEmits(['selectChat']);
 type Props = {
-  chats: Chat[];
+  chats: ChatListItem[];
 };
 
 defineProps<Props>();

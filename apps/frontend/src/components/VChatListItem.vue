@@ -12,11 +12,11 @@
 </template>
 
 <script setup lang="ts">
-import type { Chat } from '@/types/chat';
+import type { ChatListItem } from '@/types/chat';
 import { useRoute } from 'vue-router';
 
 type Props = {
-  chat: Chat;
+  chat: ChatListItem;
 };
 
 const route = useRoute();
