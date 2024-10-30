@@ -1,4 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import { useAccountStore } from '@/stores/account';
+import { computed, onMounted } from 'vue';
+import { getAccountInfo } from '@/services/accountService';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -26,10 +29,29 @@ const router = createRouter({
   ],
 });
 
-router.beforeEach((to) => {
+router.beforeEach(async (to) => {
   if (!localStorage.getItem('token')) {
     if (to.name !== 'login' && to.name !== 'register') {
       return { name: 'login' };
+    }
+  }
+
+  if (localStorage.getItem('token')) {
+    if (to.name !== 'login' && to.name !== 'register') {
+      const accountStore = useAccountStore();
+
+      const accountInfo = computed(() => {
+        return accountStore.info;
+      });
+
+      if (!accountInfo.value) {
+        const { data, error } = await getAccountInfo();
+        if (error) {
+          throw error;
+        }
+
+        accountStore.setUser(data);
+      }
     }
   }
 });

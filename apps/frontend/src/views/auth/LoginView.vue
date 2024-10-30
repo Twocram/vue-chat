@@ -1,32 +1,53 @@
 <template>
-    <div class="min-h-screen flex items-center justify-center bg-gray-100">
-        <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
-            <h2 class="text-2xl font-semibold text-gray-700 text-center">Authorization</h2>
-            <form @submit.prevent="handleLogin">
-                <div class="mt-4">
-                    <label for="username" class="block text-sm text-gray-700">Username</label>
-                    <input v-model="username" type="text" id="username"
-                        class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-                </div>
-                <div class="mt-4">
-                    <label for="password" class="block text-sm text-gray-700">Password</label>
-                    <input v-model="password" type="password" id="password"
-                        class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400" />
-                </div>
-                <div class="mt-6">
-                    <button type="submit"
-                        class="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400">
-                        Login
-                    </button>
-                </div>
-                <div class="mt-4 text-center">
-                    <p class="text-sm text-gray-600">Don't have an account?
-                        <router-link to="/auth/register" class="text-indigo-600 hover:underline">Register</router-link>
-                    </p>
-                </div>
-            </form>
+  <div class="min-h-screen flex items-center justify-center bg-gray-100">
+    <div class="max-w-md w-full bg-white p-8 rounded-lg shadow-md">
+      <h2 class="text-2xl font-semibold text-gray-700 text-center">
+        Authorization
+      </h2>
+      <form @submit.prevent="handleLogin">
+        <div class="mt-4">
+          <label for="username" class="block text-sm text-gray-700"
+            >Username</label
+          >
+          <input
+            v-model="username"
+            type="text"
+            id="username"
+            class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
         </div>
+        <div class="mt-4">
+          <label for="password" class="block text-sm text-gray-700"
+            >Password</label
+          >
+          <input
+            v-model="password"
+            type="password"
+            id="password"
+            class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          />
+        </div>
+        <div class="mt-6">
+          <button
+            type="submit"
+            class="w-full px-4 py-2 bg-indigo-600 text-white font-semibold rounded-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-400"
+          >
+            Login
+          </button>
+        </div>
+        <div class="mt-4 text-center">
+          <p class="text-sm text-gray-600">
+            Don't have an account?
+            <router-link
+              to="/auth/register"
+              class="text-indigo-600 hover:underline"
+              >Register</router-link
+            >
+          </p>
+        </div>
+      </form>
     </div>
+  </div>
 </template>
 
 <script lang="ts" setup>
@@ -34,23 +55,21 @@ import { login } from '@/services/authService';
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
-const username = ref<string>('')
-const password = ref<string>('')
+const username = ref<string>('');
+const password = ref<string>('');
 
 const router = useRouter();
 
 async function handleLogin() {
-    const { data, error } = await login(username.value, password.value)
+  const { data, error } = await login(username.value, password.value);
 
-    if (error) {
-        throw error;
-    }
+  if (error) {
+    throw error;
+  }
 
-
-    if (data && data.token) {
-        localStorage.setItem('token', data.token);
-        router.push({ name: 'home' })
-    }
+  if (data && data.token) {
+    localStorage.setItem('token', data.token);
+    router.push({ name: 'home' });
+  }
 }
-
 </script>
