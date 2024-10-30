@@ -9,6 +9,11 @@ const router = createRouter({
       component: () => import('../views/HomeView.vue'),
     },
     {
+      path: '/chat/:chatId',
+      name: 'chat',
+      component: () => import('../views/ChatView.vue'),
+    },
+    {
       path: '/auth/login',
       name: 'login',
       component: () => import('../views/auth/LoginView.vue'),
@@ -18,12 +23,15 @@ const router = createRouter({
       name: 'register',
       component: () => import('../views/auth/RegisterView.vue'),
     },
-    {
-      path: '/chat/:chatId',
-      name: 'chat',
-      component: () => import('../views/ChatView.vue'),
-    },
   ],
+});
+
+router.beforeEach((to) => {
+  if (!localStorage.getItem('token')) {
+    if (to.name !== 'login' && to.name !== 'register') {
+      return { name: 'login' };
+    }
+  }
 });
 
 export default router;
