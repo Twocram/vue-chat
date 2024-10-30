@@ -39,3 +39,11 @@ export type RegisterResponse = {
   } | null;
   error: unknown;
 };
+
+export type AccountInfoResponse = {
+  data: {
+    id: number;
+    username: string;
+  } | null;
+  error: unknown;
+};

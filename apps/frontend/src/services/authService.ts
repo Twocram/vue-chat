@@ -1,10 +1,5 @@
-import type { LoginResponse } from '@/types/response';
+import type { LoginResponse, RegisterResponse } from '@/types/response';
 
-type RegisterResponse = {
-  id: number;
-  username: string;
-  token: string;
-};
 export async function login(
   username: string,
   password: string
