@@ -17,13 +17,13 @@
           @click="openCreateChat"
           class="w-full mb-2 py-2 bg-green-500 text-white rounded-lg hover:bg-green-400 focus:outline-none"
         >
-          Создать чат
+          Create chat
         </button>
         <button
           @click="openJoinChat"
           class="w-full py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-400 focus:outline-none"
         >
-          Присоединиться к чату
+          Join to chat
         </button>
       </div>
 
@@ -31,7 +31,7 @@
         @click="logout"
         class="mt-4 w-full py-2 bg-red-500 text-white rounded-lg hover:bg-red-400 focus:outline-none"
       >
-        Выйти
+        Logout
       </button>
     </aside>
 

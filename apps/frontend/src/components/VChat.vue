@@ -23,7 +23,7 @@
         @click="buttonHandler"
         class="ml-2 px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-400"
       >
-        Отправить
+        Send
       </button>
     </div>
   </section>
