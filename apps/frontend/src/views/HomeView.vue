@@ -1,7 +1,5 @@
 <template>
-  <VChatLayout>
-  </VChatLayout>
-
+  <VChatLayout />
 </template>
 
 <script lang="ts" setup>

@@ -14,6 +14,7 @@
 <script setup lang="ts">
 import type { ChatListItem } from '@/types/chat';
 import { useRoute } from 'vue-router';
+import { computed } from 'vue';
 
 type Props = {
   chat: ChatListItem;
@@ -21,7 +22,9 @@ type Props = {
 
 const route = useRoute();
 
-const currentChat = route.params.chatId;
+const currentChat = computed<string>(() => {
+  return route.params.chatId as string;
+});
 
 defineProps<Props>();
 

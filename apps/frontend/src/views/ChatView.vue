@@ -11,16 +11,19 @@
 
 <script setup lang="ts">
 import VChatLayout from '@/layouts/VChatLayout.vue';
-import { onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 import VChat from '@/components/VChat.vue';
 import { getCurrentChat } from '@/services/chatService';
 
 const route = useRoute();
+const router = useRouter();
 
 const connection = ref<WebSocket | null>(null);
 
-const chatId = ref<string>(route.params.chatId);
+const chatId = computed<string>(() => {
+  return route.params.chatId as string;
+});
 
 const messages = ref<any>(null);
 
@@ -28,7 +31,13 @@ const currentChat = ref<any>(null);
 
 const connectionIsReady = ref<boolean>(false);
 
-onMounted(async () => {
+async function escapeHandler(e: KeyboardEvent) {
+  if (e.key === 'Escape') {
+    await router.push({ name: 'home' });
+  }
+}
+
+async function connectToChat() {
   const { data, error } = await getCurrentChat(chatId.value);
 
   if (error) {
@@ -44,9 +53,17 @@ onMounted(async () => {
 
   connectionIsReady.value = true;
 
-  connection.value.onmessage = (event) => {
-    messages.value = JSON.parse(event.data).messages;
-  };
+  if (connection.value) {
+    connection.value.onmessage = (event) => {
+      messages.value = JSON.parse(event.data).messages;
+    };
+  }
+}
+
+onMounted(async () => {
+  document.addEventListener('keydown', escapeHandler);
+
+  await connectToChat();
 });
 
 function sendMessage(message: string) {
@@ -58,6 +75,15 @@ function sendMessage(message: string) {
     );
   }
 }
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', escapeHandler);
+  connection.value?.close();
+});
+
+watch(chatId, async () => {
+  await connectToChat();
+});
 </script>
 
 <style scoped></style>
