@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { useAccountStore } from '@/stores/account';
-import { computed, onMounted } from 'vue';
+import { computed } from 'vue';
 import { getAccountInfo } from '@/services/accountService';
 
 const router = createRouter({
@@ -25,6 +25,11 @@ const router = createRouter({
       path: '/auth/register',
       name: 'register',
       component: () => import('../views/auth/RegisterView.vue'),
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'notFound',
+      component: () => import('../views/ErrorView.vue'),
     },
   ],
 });
