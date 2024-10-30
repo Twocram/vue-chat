@@ -19,3 +19,23 @@ export type JoinToChatResponse = {
   data: string | null;
   error: unknown;
 };
+
+export type LoginResponse = {
+  data: {
+    user: {
+      id: number;
+      username: string;
+    };
+    token: string;
+  } | null;
+  error: unknown;
+};
+
+export type RegisterResponse = {
+  data: {
+    id: number;
+    username: string;
+    token: string;
+  } | null;
+  error: unknown;
+};

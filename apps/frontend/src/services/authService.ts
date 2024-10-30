@@ -1,10 +1,4 @@
-type LoginResponse = {
-  user: {
-    id: number;
-    username: string;
-  };
-  token: string;
-};
+import type { LoginResponse } from '@/types/response';
 
 type RegisterResponse = {
   id: number;
@@ -14,7 +8,7 @@ type RegisterResponse = {
 export async function login(
   username: string,
   password: string
-): Promise<{ data: LoginResponse | null; error: unknown }> {
+): Promise<LoginResponse> {
   try {
     const response = await fetch('/api/v1/auth/login', {
       method: 'POST',
@@ -34,10 +28,7 @@ export async function login(
 export async function register(
   username: string,
   password: string
-): Promise<{
-  data: RegisterResponse | null;
-  error: unknown;
-}> {
+): Promise<RegisterResponse> {
   try {
     const response = await fetch('/api/v1/auth/register', {
       method: 'POST',
