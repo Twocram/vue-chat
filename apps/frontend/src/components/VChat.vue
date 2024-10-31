@@ -30,7 +30,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { onBeforeUnmount, onMounted, ref } from 'vue';
 import VMessageList from './VMessageList.vue';
 
 type Props = {
@@ -44,10 +44,23 @@ const newMessage = ref<string>('');
 
 const emits = defineEmits(['sendMessage']);
 
+function enterHandler(event: KeyboardEvent) {
+  if (event.key === 'Enter') {
+    buttonHandler();
+  }
+}
 function buttonHandler() {
   emits('sendMessage', newMessage.value);
   newMessage.value = '';
 }
+
+onMounted(() => {
+  document.addEventListener('keydown', enterHandler);
+});
+
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', enterHandler);
+});
 </script>
 
 <style scoped></style>
