@@ -11,10 +11,13 @@
           >
           <input
             v-model="username"
+            v-bind="usernameAttrs"
             type="text"
             id="username"
             class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
+
+          <div class="text-red-600">{{ errors.username }}</div>
         </div>
         <div class="mt-4">
           <label for="password" class="block text-sm text-gray-700"
@@ -22,11 +25,14 @@
           >
           <input
             v-model="password"
+            v-bind="passwordAttrs"
             type="password"
             id="password"
             class="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
           />
+          <div class="text-red-600">{{ errors.password }}</div>
         </div>
+
         <div class="mt-6">
           <button
             type="submit"
@@ -39,7 +45,7 @@
           <p class="text-sm text-gray-600">
             Don't have an account?
             <router-link
-              to="/auth/register"
+              :to="{ name: 'register' }"
               class="text-indigo-600 hover:underline"
               >Register</router-link
             >
@@ -52,16 +58,42 @@
 
 <script lang="ts" setup>
 import { login } from '@/services/authService';
-import { ref } from 'vue';
 import { useRouter } from 'vue-router';
+import * as yup from 'yup';
+import { useForm } from 'vee-validate';
 
-const username = ref<string>('');
-const password = ref<string>('');
+const schema = yup.object({
+  username: yup
+    .string()
+    .min(3, 'Username must be at least 3 characters\n')
+    .required('Username is required field'),
+  password: yup
+    .string()
+    .min(6, 'Password must be at least 6 characters\n')
+    .required('Password is required field'),
+});
+
+const { defineField, errors, setFieldError, handleSubmit } = useForm({
+  validationSchema: schema,
+});
+
+const [username, usernameAttrs] = defineField('username');
+const [password, passwordAttrs] = defineField('password');
 
 const router = useRouter();
 
-async function handleLogin() {
-  const { data, error } = await login(username.value, password.value);
+const handleLogin = handleSubmit(async (values) => {
+  const { data, error } = await login(values.username, values.password);
+
+  if (data?.error) {
+    if (data.error === 'User not found') {
+      setFieldError('username', 'Username not found');
+    }
+
+    if (data.error === 'Wrong password') {
+      setFieldError('password', 'Username or password is incorrect');
+    }
+  }
 
   if (error) {
     throw error;
@@ -69,7 +101,7 @@ async function handleLogin() {
 
   if (data && data.token) {
     localStorage.setItem('token', data.token);
-    router.push({ name: 'home' });
+    await router.push({ name: 'home' });
   }
-}
+});
 </script>

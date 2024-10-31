@@ -27,6 +27,7 @@ export type LoginResponse = {
       username: string;
     };
     token: string;
+    error?: 'User not found' | 'Wrong password';
   } | null;
   error: unknown;
 };
@@ -36,6 +37,8 @@ export type RegisterResponse = {
     id: number;
     username: string;
     token: string;
+
+    error?: 'User already exists';
   } | null;
   error: unknown;
 };

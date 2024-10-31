@@ -19,7 +19,7 @@ model User {
   password  Bytes
   token     String?   @unique
   createdAt DateTime  @default(now()) @map("created_at")
-  messages   Message[]
+  messages  Message[]
   chats     Chat[]
 
   @@unique([username])
@@ -31,7 +31,7 @@ model Chat {
   name         String
   participants User[]
   createdAt    DateTime  @default(now()) @map("created_at")
-  messages      Message[]
+  messages     Message[]
 
   @@map("chats")
 }

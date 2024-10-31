@@ -19,27 +19,31 @@ export default async function authRoutes(fastify: FastifyInstance) {
       });
 
       if (!user) {
-        return reply.code(403).send({
-          message: 'User not found',
-          data: null,
+        return reply.code(200).send({
+          data: {
+            error: 'User not found',
+          },
         });
       }
 
       const _password = await generateHash(password);
 
       if (!_password.equals(user.password)) {
-        return reply.code(403).send({
-          message: 'Wrong password',
-          data: null,
+        return reply.code(200).send({
+          data: {
+            error: 'Wrong password',
+          },
         });
       }
 
       return reply.send({
-        user: {
-          id: user.id,
-          username: user.username,
+        data: {
+          user: {
+            id: user.id,
+            username: user.username,
+          },
+          token: user.token,
         },
-        token: user.token,
       });
     }
   );
@@ -61,9 +65,10 @@ export default async function authRoutes(fastify: FastifyInstance) {
       });
 
       if (userExists) {
-        return reply.code(409).send({
-          message: 'User already exists',
-          data: null,
+        return reply.code(200).send({
+          data: {
+            error: 'User already exists',
+          },
         });
       }
 
