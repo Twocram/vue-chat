@@ -15,6 +15,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import VChat from '@/components/VChat.vue';
 import { getCurrentChat } from '@/services/chatService';
+import type { Chat, Message } from '@/types/chat';
 
 const route = useRoute();
 const router = useRouter();
@@ -25,9 +26,9 @@ const chatId = computed<string>(() => {
   return route.params.chatId as string;
 });
 
-const messages = ref<any>(null);
+const messages = ref<Message[]>([]);
 
-const currentChat = ref<any>(null);
+const currentChat = ref<Chat | null>(null);
 
 const connectionIsReady = ref<boolean>(false);
 
@@ -55,7 +56,7 @@ async function connectToChat() {
 
   if (connection.value) {
     connection.value.onmessage = (event) => {
-      messages.value = JSON.parse(event.data).messages;
+      messages.value = JSON.parse(event.data).messages as Message[];
     };
   }
 }

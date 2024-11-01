@@ -1,4 +1,5 @@
 import { FastifyInstance } from 'fastify';
+import { pick } from '../utils/pick';
 
 const clients = new Map<string, any[]>();
 
@@ -20,7 +21,9 @@ export default async function messageRoutes(fastify: FastifyInstance) {
 
     connection.send(
       JSON.stringify({
-        messages: chatMessages,
+        messages: chatMessages.map((message) =>
+          pick(message, 'id', 'text', 'createdAt', 'userId')
+        ),
       })
     );
 
@@ -61,7 +64,9 @@ export default async function messageRoutes(fastify: FastifyInstance) {
       clients.get(id)?.forEach((client) => {
         client.send(
           JSON.stringify({
-            messages: _chatMessages,
+            messages: _chatMessages.map((message) =>
+              pick(message, 'id', 'text', 'createdAt', 'userId')
+            ),
           })
         );
       });
