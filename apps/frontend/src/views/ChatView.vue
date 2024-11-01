@@ -48,7 +48,7 @@ async function connectToChat() {
   currentChat.value = data;
 
   connection.value = new WebSocket(
-    `ws://localhost:3000/api/v1/messages/${chatId.value}`,
+    `${import.meta.env['VITE_WS_URL']}/messages/${chatId.value}`,
     ['accessToken', localStorage.getItem('token') as string]
   );
 
