@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import type { ChatListItem } from '@/types/chat';
-import VChatListItem from './VChatListItem.vue';
+import VChatListItem from '../VChatListItem/VChatListItem.vue';
 
 const emits = defineEmits(['selectChat']);
 type Props = {

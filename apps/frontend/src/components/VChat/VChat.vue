@@ -31,7 +31,7 @@
 
 <script setup lang="ts">
 import { onBeforeUnmount, onMounted, ref } from 'vue';
-import VMessageList from './VMessageList.vue';
+import VMessageList from '../VMessageList/VMessageList.vue';
 
 type Props = {
   messages: any;

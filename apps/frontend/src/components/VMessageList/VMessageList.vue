@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import VMessageListItem from './VMessageListItem.vue';
+import VMessageListItem from '../VMessageListItem/VMessageListItem.vue';
 type Props = {
   messages: any;
 };

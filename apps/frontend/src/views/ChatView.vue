@@ -10,12 +10,12 @@
 </template>
 
 <script setup lang="ts">
+import VChat from '@/components/VChat/VChat.vue';
 import VChatLayout from '@/layouts/VChatLayout.vue';
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
-import { useRoute, useRouter } from 'vue-router';
-import VChat from '@/components/VChat.vue';
 import { getCurrentChat } from '@/services/chatService';
 import type { Chat, Message } from '@/types/chat';
+import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
 const router = useRouter();
