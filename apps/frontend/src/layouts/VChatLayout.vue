@@ -54,7 +54,7 @@
 <script setup lang="ts">
 import VCreateChat from '@/components/dialogs/VCreateChat.vue';
 import VJoinChat from '@/components/dialogs/VJoinChat.vue';
-import VChatList from '@/components/VChatList.vue';
+import VChatList from '@/components/VChatList/VChatList.vue';
 import { createChat, getUserChats, joinToChat } from '@/services/chatService';
 import type { ChatListItem } from '@/types/chat';
 import { debounce } from '@/utils/debounce';
