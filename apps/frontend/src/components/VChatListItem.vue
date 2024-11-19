@@ -13,8 +13,8 @@
 
 <script setup lang="ts">
 import type { ChatListItem } from '@/types/chat';
-import { useRoute } from 'vue-router';
 import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 type Props = {
   chat: ChatListItem;

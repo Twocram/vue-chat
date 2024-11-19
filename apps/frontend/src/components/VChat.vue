@@ -6,7 +6,7 @@
       </h2>
       <p v-if="currentChat" class="text-sm text-gray-500">
         Участники:
-        {{ currentChat.participants.map((p) => p.username).join(', ') }}
+        {{ currentChat.participants.map((p: any) => p.username).join(', ') }}
       </p>
     </div>
 

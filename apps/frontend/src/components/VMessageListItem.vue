@@ -1,6 +1,9 @@
 <template>
   <div class="mb-2">
-    <p :class="{ 'text-right': messageFrom === currentUser.id }">
+    <p
+      v-if="currentUser"
+      :class="{ 'text-right': messageFrom === currentUser.id }"
+    >
       <span
         :class="{
           'bg-indigo-500 text-white': messageFrom === currentUser.id,

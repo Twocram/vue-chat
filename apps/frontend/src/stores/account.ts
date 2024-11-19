@@ -1,8 +1,9 @@
 import { defineStore } from 'pinia';
+import type { AccountInfoResponse } from '@/types/response';
 
 export const useAccountStore = defineStore('account', {
   state: () => ({
-    info: null,
+    info: null as AccountInfoResponse['data'],
   }),
 
   actions: {
